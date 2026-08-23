@@ -8,7 +8,8 @@ st.title("✍️ Generator de Reclame Facebook (Formula AIDA)")
 st.write("Introdu numele produsului tău și AI-ul va genera o reclamă optimizată pentru vânzări.")
 
 
-api_key = st.secrets["GEMINI_API_KEY"]
+GEMINI_API_KEY = "AQ.Ab8RN6KVXXXBWGZcEeY52Hv7YYPC63YwlrSlC2ZbWrUWy9C8eA"
+
 
 
 
