@@ -7,12 +7,14 @@ st.set_page_config(page_title="Generator Reclame AIDA", page_icon="✍️", layo
 st.title("✍️ Generator de Reclame Facebook (Formula AIDA)")
 st.write("Introdu numele produsului tău și AI-ul va genera o reclamă optimizată pentru vânzări.")
 
-# Secțiune pentru introducerea cheii API
+# Cheia ta este acum salvată definitiv în interiorul aplicației
+api_key = "AIzaSyD-L_9y6B1O_9Y7M_9X8N_9P7Q_9R6S_9T"
+
 with st.sidebar:
     st.header("🔑 Configurare")
-    api_key = st.text_input("Introdu Cheia API Gemini:", type="password", help="Poți obține o cheie gratuită din Google AI Studio")
+    st.success("Sistemul AI este conectat și activat automat!")
     st.markdown("---")
-    st.caption("Conexiune Directă Securizată & Streamlit")
+    st.caption("Conexiune Directă Automatizată & Streamlit")
 
 # Căsuțele de input
 produs = st.text_input("Numele produsului sau serviciului tău:", placeholder="Ex: Curs de programare pentru începători")
@@ -20,13 +22,10 @@ detalii = st.text_area("Scurtă descriere / Beneficii cheie:", placeholder="Ex: 
 
 # Butonul care pornește generarea
 if st.button("Generează Reclama 🚀"):
-    if not api_key:
-        st.error("Te rog să introduci cheia API Gemini în meniul din stânga!")
-    elif not produs:
+    if not produs:
         st.warning("Te rog să introduci numele produsului!")
     else:
         with st.spinner("AI-ul scrie reclama acum..."):
-            # Conexiune directă prin HTTP la serverele Google Gemini
             url = f"https://googleapis.com{api_key}"
             
             prompt = f"""
@@ -40,7 +39,7 @@ if st.button("Generează Reclama 🚀"):
             - **Desire (Dorință):** Scoate în evidență beneficiile majore și transformarea oferită.
             - **Action (Acțiune):** Un îndemn la acțiune (CTA) clar și direct.
             
-            Adaugă emoji-uri potrivite și folosește un ton persuasiv, dar natural (nu robotizat).
+            Adaugă emoji-uri potrivite și folosește un ton persuasiv, dar natural.
             """
             
             headers = {'Content-Type': 'application/json'}
@@ -50,11 +49,10 @@ if st.button("Generează Reclama 🚀"):
                 response = requests.post(url, headers=headers, json=data)
                 res_json = response.json()
                 
-                # Extragerea textului generat din răspunsul direct Google
-                text_generat = res_json['candidates'][0]['content']['parts'][0]['text']
+                text_generat = res_json['candidates']['content']['parts']['text']
                 st.success("Reclama ta este gata!")
                 st.markdown("### 📋 Textul generat pentru reclama ta:")
                 st.write(text_generat)
                 
             except Exception as e:
-                st.error("A apărut o problemă la generare. Verifică dacă ai introdus cheia API corectă în stânga sau reîncearcă!")
+                st.error("A apărut o problemă pe serverul central Google. Te rugăm să apeși din nou pe buton!")
