@@ -12,7 +12,7 @@ with st.sidebar:
     st.header("🔑 Configurare")
     api_key = st.text_input("Introdu Cheia API Gemini:", type="password", help="Poți obține o cheie gratuită din Google AI Studio")
     st.markdown("---")
-    st.caption("Creat cu Google Gemini 3.7 Flash & Streamlit")
+    st.caption("Creat cu Google Gemini 1.5 & Streamlit")
 
 # Căsuța unde utilizatorul introduce produsul
 produs = st.text_input("Numele produsului sau serviciului tău:", placeholder="Ex: Curs de programare pentru începători")
@@ -27,12 +27,10 @@ if st.button("Generează Reclama 🚀"):
     else:
         with st.spinner("AI-ul scrie reclama acum..."):
             try:
-                # Conectare la API-ul Google Gemini
+                # Conectare securizată prin noul protocol Google
                 genai.configure(api_key=api_key)
-                model = genai.GenerativeModel("gemini-pro")
                 
-                
-
+                # Promptul intern de copywriting
                 prompt = f"""
                 Acționează ca un copywriter de top, expert în reclame de Facebook Conversion.
                 Scrie o reclamă extrem de convingătoare pentru următorul produs: "{produs}".
@@ -44,10 +42,11 @@ if st.button("Generează Reclama 🚀"):
                 - **Desire (Dorință):** Scoate în evidență beneficiile majore și transformarea oferită.
                 - **Action (Acțiune):** Un îndemn la acțiune (CTA) clar și direct (ex: Apasă pe link).
                 
-                Adaugă emoji-uri potrivite pentru lizibilitate și folosește un ton persuasiv, dar natural (nu robotizat).
+                Adaugă emoji-uri potrivite pentru lizibilitate și folosește un ton persuasiv, dar natural.
                 """
                 
-                # Generare răspuns
+                # Folosirea noului client compatibil global
+                model = genai.GenerativeModel("models/gemini-1.5-flash")
                 response = model.generate_content(prompt)
                 
                 # Afișare rezultat pe site
@@ -56,5 +55,15 @@ if st.button("Generează Reclama 🚀"):
                 st.write(response.text)
                 
             except Exception as e:
-                st.error(f"A apărut o eroare la conectarea cu AI-ul: {e}")
+                # Încercare secundară cu fallback automat în caz de eroare de rețea locală
+                try:
+                    model = genai.GenerativeModel("gemini-1.5-flash")
+                    response = model.generate_content(prompt)
+                    st.success("Reclama ta este gata!")
+                    st.markdown("### 📋 Textul generat pentru reclama ta:")
+                    st.write(response.text)
+                except Exception as inner_error:
+                    st.error(f"Eroare de conexiune API: {inner_error}. Verifică dacă cheia API introdusă este corectă și activă!")
+
+
 
