@@ -7,8 +7,8 @@ st.set_page_config(page_title="Generator Reclame AIDA", page_icon="✍️", layo
 st.title("✍️ Generator de Reclame Facebook (Formula AIDA)")
 st.write("Introdu numele produsului tău și AI-ul va genera o reclamă optimizată pentru vânzări.")
 
-# Cheia ta este acum salvată definitiv în interiorul aplicației
-# Modifică linia 11 așa:
+
+
 api_key = st.secrets["GEMINI_API_KEY"]
 
 
